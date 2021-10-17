@@ -1465,8 +1465,8 @@ static struct dma_buf_ops dma_buf_ops = {
 	.attach = ion_dma_buf_attach,
 	.detach = ion_dma_buf_detatch,
 #endif
-	.begin_cpu_access = ion_dma_buf_begin_cpu_access,
-	.end_cpu_access = ion_dma_buf_end_cpu_access,
+	.begin_cpu_access = dma_buf_begin_cpu_access,
+	.end_cpu_access = dma_buf_end_cpu_access,
 	.map_atomic = ion_dma_buf_kmap,
 	.unmap_atomic = ion_dma_buf_kunmap,
 	.map = ion_dma_buf_kmap,

@@ -6,8 +6,8 @@ gcc64="$(pwd)/../gcc64"
 gcc="$(pwd)/../gcc"
 Any="$(pwd)/../AnyKernel3"
 
-MakeZip(){
-    if [ ! -d $Any ];then
+MakeZip() {
+    if [ ! -d $Any ]; then
         git clone https://github.com/TeraaBytee/AnyKernel3 -b master $Any
     else
         cd $Any
@@ -23,14 +23,16 @@ MakeZip(){
     cd $MainPath
 }
 
-if [ ! -d $clang ];then
-    git clone --depth=1 https://github.com/TeraaBytee/google-clang -b 11.0.2-r383902b $clang
+if [ ! -d $clang ]; then
+    git clone --depth=1 https://github.com/TeraaBytee/google-clang -b 11.0.2 $clang
 fi
-if [ ! -d $gcc64 ];then
-    git clone --depth=1 https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9 $gcc64
+
+if [ ! -d $gcc64 ]; then
+    git clone --depth=1 https://github.com/TeraaBytee/aarch64-linux-android-4.9 $gcc64
 fi
-if [ ! -d $gcc ];then
-    git clone --depth=1 https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.9 $gcc
+
+if [ ! -d $gcc ]; then
+    git clone --depth=1 https://github.com/TeraaBytee/arm-linux-androideabi-4.9 $gcc
 fi
 
 HeadCommit="$(git log --pretty=format:'%h' -1)"
@@ -45,20 +47,22 @@ TIME=$(date +"%m%d%H%M")
 
 Compiler=CLANG
 MAKE="./makeparallel"
-rm -rf out *.log
-exec 2> >(tee -a error.log >&2)
+rm -rf out
 BUILD_START=$(date +"%s")
 
-make -j$(nproc --all) O=out ARCH=arm64 SUBARCH=arm64 $Defconfig
-make -j$(nproc --all) O=out \
-                      PATH="$clang/bin:$gcc64/bin:$gcc/bin:/usr/bin:$PATH" \
-                      LD_LIBRARY_PATH="$clang/lib64:$LD_LIBRABRY_PATH" \
-                      CC=clang \
-                      CROSS_COMPILE=aarch64-linux-android- \
-                      CROSS_COMPILE_ARM32=arm-linux-androideabi- \
-                      CLANG_TRIPLE=aarch64-linux-gnu-
+make  -j$(nproc --all)  O=out ARCH=arm64 SUBARCH=arm64 $Defconfig
+exec 2> >(tee -a out/error.log >&2)
 
-if [ -e $MainPath/out/arch/arm64/boot/Image.gz-dtb ];then
+make  -j$(nproc --all)  O=out \
+                        PATH="$clang/bin:$gcc64/bin:$gcc/bin:/usr/bin:$PATH" \
+                        LD_LIBRARY_PATH="$clang/lib64:$LD_LIBRABRY_PATH" \
+                        CC=clang \
+                        LD=ld.lld \
+                        CROSS_COMPILE=aarch64-linux-android- \
+                        CROSS_COMPILE_ARM32=arm-linux-androideabi- \
+                        CLANG_TRIPLE=aarch64-linux-gnu-
+
+if [ -e $MainPath/out/arch/arm64/boot/Image.gz-dtb ]; then
     BUILD_END=$(date +"%s")
     DIFF=$((BUILD_END - BUILD_START))
     MakeZip

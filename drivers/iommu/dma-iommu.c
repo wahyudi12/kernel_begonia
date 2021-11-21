@@ -294,7 +294,7 @@ int iommu_dma_init_domain(struct iommu_domain *domain, dma_addr_t base,
 		if (base > domain->geometry.aperture_end ||
 		    base + size <= domain->geometry.aperture_start) {
 #ifndef CONFIG_MTK_IOMMU_V2
-			pr_warn("specified DMA range outside IOMMU capability, base:0x%lx, size:0x%lx, aperture(0x%lx, 0x%lx)\n",
+			pr_warn("specified DMA range outside IOMMU capability, base:0x%llx, size:0x%llx, aperture(0x%llx, 0x%llx)\n",
 				base, size, domain->geometry.aperture_start,
 				domain->geometry.aperture_end);
 			return -EFAULT;

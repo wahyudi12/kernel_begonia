@@ -178,7 +178,7 @@ struct cmdq_client *cmdq_mbox_create(struct device *dev, int index)
 	client->client.tx_block = false;
 	client->chan = mbox_request_channel(&client->client, index);
 	if (IS_ERR(client->chan)) {
-		cmdq_err("channel request fail:%d, idx:%d",
+		cmdq_err("channel request fail:%ld, idx:%d",
 			PTR_ERR(client->chan), index);
 		dump_stack();
 		kfree(client);
@@ -2156,7 +2156,7 @@ static void cmdq_buf_print_move(char *text, u32 txt_sz,
 			"%#06x %#010x [Move ] mask %#018llx",
 			offset, *((u32 *)cmdq_inst), ~val);
 	if (len >= txt_sz)
-		cmdq_log("len:%d over txt_sz:%d", len, txt_sz);
+		cmdq_log("len:%llu over txt_sz:%d", len, txt_sz);
 }
 
 static void cmdq_buf_print_logic(char *text, u32 txt_sz,

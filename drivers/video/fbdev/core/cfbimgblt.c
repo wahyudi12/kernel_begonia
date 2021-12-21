@@ -329,6 +329,68 @@ static inline void fast_imageblit16(const struct fb_image *image,
 		s += spitch;
 	}
 }
+/*
+ * Optimized fast_imageblit for bpp == 16. ppw = 2, bit_mask = 3 folded
+ * into the code, main loop unrolled.
+ */
+
+static inline void fast_imageblit16(const struct fb_image *image,
+				    struct fb_info *p, u8 __iomem * dst1,
+				    u32 fgcolor, u32 bgcolor)
+{
+	u32 fgx = fgcolor, bgx = bgcolor;
+	u32 spitch = (image->width + 7) / 8;
+	u32 end_mask, eorx;
+	const char *s = image->data, *src;
+	u32 __iomem *dst;
+	const u32 *tab = NULL;
+	int i, j, k;
+
+	tab = fb_be_math(p) ? cfb_tab16_be : cfb_tab16_le;
+
+	fgx <<= 16;
+	bgx <<= 16;
+	fgx |= fgcolor;
+	bgx |= bgcolor;
+
+	eorx = fgx ^ bgx;
+	k = image->width / 2;
+
+	for (i = image->height; i--;) {
+		dst = (u32 __iomem *) dst1;
+		src = s;
+
+		j = k;
+		while (j >= 4) {
+			u8 bits = *src;
+			end_mask = tab[(bits >> 6) & 3];
+			FB_WRITEL((end_mask & eorx) ^ bgx, dst++);
+			end_mask = tab[(bits >> 4) & 3];
+			FB_WRITEL((end_mask & eorx) ^ bgx, dst++);
+			end_mask = tab[(bits >> 2) & 3];
+			FB_WRITEL((end_mask & eorx) ^ bgx, dst++);
+			end_mask = tab[bits & 3];
+			FB_WRITEL((end_mask & eorx) ^ bgx, dst++);
+			src++;
+			j -= 4;
+		}
+		if (j != 0) {
+			u8 bits = *src;
+			end_mask = tab[(bits >> 6) & 3];
+			FB_WRITEL((end_mask & eorx) ^ bgx, dst++);
+			if (j >= 2) {
+				end_mask = tab[(bits >> 4) & 3];
+				FB_WRITEL((end_mask & eorx) ^ bgx, dst++);
+				if (j == 3) {
+					end_mask = tab[(bits >> 2) & 3];
+					FB_WRITEL((end_mask & eorx) ^ bgx, dst);
+				}
+			}
+		}
+		dst1 += p->fix.line_length;
+		s += spitch;
+	}
+}
 
 /*
  * Optimized fast_imageblit for bpp == 32. ppw = 1, bit_mask = 1 folded
@@ -425,7 +487,6 @@ void cfb_imageblit(struct fb_info *p, const struct fb_image *image)
 			fgcolor = image->fg_color;
 			bgcolor = image->bg_color;
 		}
-
 		if (!start_index && !pitch_index) {
 			if (bpp == 32)
 				fast_imageblit32(image, p, dst1, fgcolor,
@@ -452,4 +513,5 @@ EXPORT_SYMBOL(cfb_imageblit);
 MODULE_AUTHOR("James Simmons <jsimmons@users.sf.net>");
 MODULE_DESCRIPTION("Generic software accelerated imaging drawing");
 MODULE_LICENSE("GPL");
+
 

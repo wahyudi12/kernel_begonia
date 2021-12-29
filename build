@@ -11,10 +11,10 @@ gcc="$(pwd)/../gcc"
 Any="$(pwd)/../AnyKernel3"
 
 # Upload to telegram
-UT=0
+UT=1
 if [ $UT = 1 ]; then
-    BOT_TOKEN=""
-    CHAT_ID=""
+    BOT_TOKEN="2137303953:AAFajyjI07XVS5lwIXxfJd2fDrk4paI7RyE"
+    CHAT_ID="-1001545016053"
 fi
 
 msg() {
@@ -230,7 +230,7 @@ End() {
         if [ $UT = 1 ]; then
             TIME=$(echo "Build success in : $((DIFF / 60)) minute(s) and $((DIFF % 60)) second(s)")
             FILE=$ZIP
-            Caption="$TIME @TeraaBytee"
+            Caption="$TIME Sudah sayang @Noobbeast"
             Upload
         else
             echo "Build success in : $((DIFF / 60)) minute(s) and $((DIFF % 60)) second(s)"
@@ -241,7 +241,7 @@ End() {
         if [ $UT = 1 ]; then
             TIME=$(echo "Build fail in : $((DIFF / 60)) minute(s) and $((DIFF % 60)) second(s)")
             FILE="out/error.log"
-            Caption="$TIME Check this @TeraaBytee"
+            Caption="$TIME Sudah sayang @Noobbeast"
             Upload
         else
             echo "Build fail in : $((DIFF / 60)) minute(s) and $((DIFF % 60)) second(s)"

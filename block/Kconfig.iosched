@@ -48,22 +48,22 @@ choice
 	  Select the I/O scheduler which will be used by default for all
 	  block devices.
 
-	config DEFAULT_DEADLINE
-		bool "Deadline" if IOSCHED_DEADLINE=y
+config IOSCHED_TRIPNDROID
+        tristate "Tripndroid I/O scheduler"
+        default y
 
-	config DEFAULT_CFQ
-		bool "CFQ" if IOSCHED_CFQ=y
-
-	config DEFAULT_NOOP
-		bool "No-op"
-
-endchoice
-
-config DEFAULT_IOSCHED
-	string
-	default "deadline" if DEFAULT_DEADLINE
-	default "cfq" if DEFAULT_CFQ
-	default "noop" if DEFAULT_NOOP
+config IOSCHED_ANXIETY
+	tristate "Anxiety I/O Scheduler"
+	default y
+	---help---
+	  Anxiety is a low-latency I/O scheduler designed for use in
+	  embedded devices with flash storage. It attempts to provide
+	  unfair request bias, batching synchronous requests together
+	  at the expense of delaying asyncrhonous requests. By
+	  definition, synchronous requests are essentially "holding up"
+	  the current processes until they are dispatched. By biasing
+	  and batching synchronous requests, process initialization is
+	  expedited.
 
 config MQ_IOSCHED_DEADLINE
 	tristate "MQ deadline I/O scheduler"
@@ -100,6 +100,62 @@ config BFQ_GROUP_IOSCHED
        Enable hierarchical scheduling in BFQ, using the blkio
        (cgroups-v1) or io (cgroups-v2) controller.
 
+
+choice
+
+	prompt "Default I/O scheduler"
+	default DEFAULT_CFQ
+	help
+	  Select the I/O scheduler which will be used by default for all
+	  block devices.
+
+	config DEFAULT_DEADLINE
+		bool "Deadline" if IOSCHED_DEADLINE=y
+
+	config DEFAULT_CFQ
+		bool "CFQ" if IOSCHED_CFQ=y
+
+	config DEFAULT_ANXIETY
+		bool "Anxiety" if IOSCHED_ANXIETY=y
+
+	config DEFAULT_NOOP
+		bool "No-op"
+
+	config DEFAULT_BFQ
+		bool "BFQ" if IOSCHED_BFQ=y
+		help
+		  Selects BFQ as the default I/O scheduler which will be
+		  used by default for all block devices.
+		  The BFQ I/O scheduler aims at distributing the bandwidth
+		  as desired, independently of the disk parameters and with
+		  any workload. It also tries to guarantee low latency to
+		  interactive and soft real-time applications.
+
+	config DEFAULT_FIOPS
+		bool "FIOPS" if IOSCHED_FIOPS=y
+
+	config DEFAULT_SIO
+		bool "SIO" if IOSCHED_SIO=y
+
+	config DEFAULT_ZEN
+		bool "ZEN" if IOSCHED_ZEN=y
+
+	config DEFAULT_TRIPNDROID
+		bool "Tripndroid" if IOSCHED_TRIPNDROID=y
+
+endchoice
+
+config DEFAULT_IOSCHED
+	string
+	default "deadline" if DEFAULT_DEADLINE
+	default "cfq" if DEFAULT_CFQ
+	default "anxiety" if DEFAULT_ANXIETY
+	default "fiops" if DEFAULT_FIOPS
+	default "sio" if DEFAULT_SIO
+	default "zen" if DEFAULT_ZEN
+	default "noop" if DEFAULT_NOOP
+	default "bfq" if DEFAULT_BFQ
+	default "tripndroid" if DEFAULT_TRIPNDROID
 endmenu
 
 endif

@@ -3,6 +3,10 @@ if BLOCK
 
 menu "IO Schedulers"
 
+config IOSCHED_TRIPNDROID
+        tristate "Tripndroid I/O scheduler"
+        default y
+
 config IOSCHED_NOOP
 	bool
 	default y
@@ -56,6 +60,10 @@ choice
 
 	config DEFAULT_NOOP
 		bool "No-op"
+
+
+config DEFAULT_TRIPNDROID
+		bool "Tripndroid" if IOSCHED_TRIPNDROID=y
 
 endchoice
 

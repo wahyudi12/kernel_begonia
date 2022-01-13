@@ -217,7 +217,7 @@ static int proc_tcp_congestion_control(struct ctl_table *ctl, int write,
 
 	ret = proc_dostring(&tbl, write, buffer, lenp, ppos);
 	if (write && ret == 0)
-		ret = tcp_set_default_congestion_control(val);
+		ret = tcp_set_default_congestion_control(CONFIG_DEFAULT_TCP_CONG);
 	return ret;
 }
 

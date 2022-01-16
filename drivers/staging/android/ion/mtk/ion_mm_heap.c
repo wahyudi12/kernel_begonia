@@ -571,7 +571,7 @@ void ion_mm_heap_free_buffer_info(struct ion_buffer *buffer)
 
 	for (domain_idx = 0;
 		domain_idx < DOMAIN_NUM; domain_idx++) {
-		IONDBG("mva[%d]:0x%x -- 0x%x,", domain_idx,
+		IONDBG("mva[%d]:0x%lx -- 0x%lx,", domain_idx,
 		       buffer_info->MVA[domain_idx],
 		       buffer_info->FIXED_MVA[domain_idx]);
 		if (buffer_info->MVA[domain_idx] == 0 &&
@@ -1009,7 +1009,7 @@ static int ion_mm_heap_phys(struct ion_heap *heap, struct ion_buffer *buffer,
 				       ret, sg_phys(buffer->sg_table->sgl),
 				       sg_phys(buffer_info->table_orig->sgl));
 #else
-				IONMSG("OUT OF RANGE(%d) pa=0x%lx\n",
+				IONMSG("OUT OF RANGE(%d) pa=0x%llx\n",
 				       ret, sg_phys(buffer->sg_table->sgl));
 #endif
 				ion_buffer_dump(buffer, NULL);
@@ -1028,7 +1028,7 @@ static int ion_mm_heap_phys(struct ion_heap *heap, struct ion_buffer *buffer,
 		buffer_info->mva_cnt++;
 		buffer_info->port[domain_idx] = port_info.emoduleid;
 		IONDBG(
-		       "%d, iova mapping done, buffer:0x%p, port:%d, mva:0x%lx, fix:0x%lx, return:0x%lx, cnt=%d, domain%d\n",
+		       "%d, iova mapping done, buffer:0x%p, port:%d, mva:0x%lx, fix:0x%lx, return:0x%x, cnt=%d, domain%d\n",
 		       __LINE__, buffer, buffer_info->port[domain_idx],
 		       buffer_info->MVA[domain_idx],
 		       buffer_info->FIXED_MVA[domain_idx],
@@ -1101,7 +1101,7 @@ static int ion_mm_heap_phys(struct ion_heap *heap, struct ion_buffer *buffer,
 		IONDBG("[%s] Port %d, in_len 0x%x, MVA(0x%x-%zu)",
 		       __func__, port_info.emoduleid, *(unsigned int *)len,
 		       *(unsigned int *)addr, buffer->size);
-		IONDBG("(region 0x%x--0x%x) (VA 0x%lx-%d)\n",
+		IONDBG("(region 0x%lx--0x%lx) (VA 0x%lx-%d)\n",
 		       buffer_info->iova_start[domain_idx],
 		       buffer_info->iova_end[domain_idx],
 		       (unsigned long)buffer_info->VA, non_vmalloc_request);

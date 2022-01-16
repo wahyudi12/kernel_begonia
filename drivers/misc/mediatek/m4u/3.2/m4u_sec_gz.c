@@ -89,7 +89,7 @@ TZ_RESULT _prepare_region(KREE_SHAREDMEM_PARAM *shm_param)
 	shm_param->region_id = 0;
 	shm_param->mapAry = NULL;	/*continuous pages */
 	M4ULOG_HIGH
-	    ("[MTEE][%s]prepare buf: shm_param->buffer=%llx, size =%d",
+	    ("[MTEE][%s]prepare buf: shm_param->buffer=%p, size =%d",
 	     __func__, shm_param->buffer, shm_param->size);
 	return TZ_RESULT_SUCCESS;
 

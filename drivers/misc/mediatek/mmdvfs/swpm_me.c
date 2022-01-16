@@ -97,7 +97,7 @@ static unsigned int cal_fps(unsigned int *start, unsigned int *end,
 	duration = time[local_end] - time[local_start];
 	if (count > 1)
 		fps = ((count-1) * 1000000 - 1) / duration + 1;
-	pr_debug("%s: start(%d)=%d end(%d)=%d count=%d duration=%d fps=%d\n",
+	pr_debug("%s: start(%d)=%lu end(%u)=%lu count=%u duration=%lu fps=%u\n",
 		__func__, *start, time[local_start], *end, time[local_end],
 		count, duration, fps);
 	return fps;

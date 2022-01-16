@@ -12,6 +12,8 @@ ccflags-y += -Wno-unused-value
 ccflags-y += -Wno-unused-result
 ccflags-y += -Wno-format
 ccflags-y += -Wno-parentheses
+ccflags-y += -Wno-sizeof-pointer-memaccess
+ccflags-y += $(call cc-option,-Wno-memset-elt-size)
 
 ifeq ($(os), none)
 ccflags-y += -I/usr/include/

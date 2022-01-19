@@ -165,7 +165,7 @@ Build_GCC() {
                             PATH="$GCC64/bin:$GCC/bin:/usr/bin:$PATH" \
                             AR=aarch64-elf-ar \
                             NM=llvm-nm \
-                            LD=ld.lld \
+                            LD=aarch64-elf-ld \
                             OBCOPY=llvm-objcopy \
                             OBJDUMP=aarch64-elf-objdump \
                             STRIP=aarch64-elf-strip \

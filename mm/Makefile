@@ -38,7 +38,7 @@ mmu-$(CONFIG_MMU)	:= gup.o highmem.o memory.o mincore.o \
 ifdef CONFIG_CROSS_MEMORY_ATTACH
 mmu-$(CONFIG_MMU)	+= process_vm_access.o
 endif
-
+ccflags-y += $(call cc-option,-Wno-array-compare)
 obj-y			:= filemap.o mempool.o oom_kill.o \
 			   maccess.o page_alloc.o page-writeback.o \
 			   readahead.o swap.o truncate.o vmscan.o shmem.o \

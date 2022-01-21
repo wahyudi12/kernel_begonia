@@ -272,7 +272,7 @@ static int simple_lmk_reclaim_thread(void *data)
 	sched_setscheduler_nocheck(current, SCHED_FIFO, &sched_max_rt_prio);
 
 	while (1) {
-		wait_event(oom_waitq, atomic_read(&needs_reclaim));
+		wait_event_freezable(oom_waitq, atomic_read(&needs_reclaim));
 		scan_and_kill();
 		atomic_set_release(&needs_reclaim, 0);
 	}

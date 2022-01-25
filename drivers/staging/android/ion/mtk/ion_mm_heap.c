@@ -294,53 +294,6 @@ int ion_get_domain_id(int from_kernel, int *port)
 static int ion_mm_heap_phys(struct ion_heap *heap, struct ion_buffer *buffer,
 			    ion_phys_addr_t *addr, size_t *len);
 
-static int ion_mm_heap_init_domain(struct ion_mm_buffer_info *buffer_info,
-				   unsigned int domain)
-{
-#if defined(CONFIG_MTK_IOMMU_PGTABLE_EXT) && \
-	(CONFIG_MTK_IOMMU_PGTABLE_EXT > 32)
-	int i;
-	unsigned int start = 0, end = 0;
-	struct sg_table *table = buffer_info->table_orig;
-	int ret = 0;
-
-	if (domain == DOMAIN_NUM) {
-		start = 0;
-		end = DOMAIN_NUM;
-	} else if (domain < DOMAIN_NUM) {
-		start = domain;
-		end = domain + 1;
-	} else {
-		IONMSG("%s invalid domain:%u.\n",
-		       __func__, domain);
-		return -3;
-	}
-
-	for (i = start; i < end; i++) {
-		ret = sg_alloc_table(&buffer_info->table[i],
-				     table->nents, GFP_KERNEL);
-		if (ret) {
-			IONMSG("%s sg alloc table failed,nents=%d, ret=%d.\n",
-			       __func__, table->nents, ret);
-			return -1;
-		}
-		ret = clone_sg_table(table,
-				     &buffer_info->table[i]);
-		if (ret) {
-			IONMSG(
-			       "%s, %d, err clone sg table, src n=%d, domain%d dest n=%d\n",
-			       __func__, __LINE__, i,
-			       table->nents,
-			       buffer_info->table[i].nents);
-			sg_free_table(&buffer_info->table[i]);
-			return -2;
-		}
-	}
-#endif
-
-	return 0;
-}
-
 static int ion_mm_heap_allocate(struct ion_heap *heap,
 				struct ion_buffer *buffer, unsigned long size,
 				unsigned long align, unsigned long flags)

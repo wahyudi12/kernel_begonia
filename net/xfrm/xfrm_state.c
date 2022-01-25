@@ -45,8 +45,6 @@ static void
 xfrm_state_check_add_byspi_hlish(struct hlist_head *head, struct xfrm_state *new, char *func_name);
 static void xfrm_state_check_del_byspi_hlish(struct xfrm_state *x, char *func_name);
 static void xfrm_state_get_back_trace(struct xfrm_state_trace *trace);
-static void xfrm_state_print_back_trace(struct xfrm_state *x);
-static void xfrm_state_print_refcount_back_trace(struct xfrm_state *x);
 
 static void xfrm_state_gc_task(struct work_struct *work);
 
@@ -911,25 +909,6 @@ static void xfrm_state_get_back_trace(struct xfrm_state_trace *trace)
 	trace->count++;
 	trace->when_nsec = do_div(ts_nsc, 1000000000);
 	trace->when_sec = ts_nsc;
-#endif
-}
-
-static void __printf_back_trace(struct xfrm_state_trace *trace, char *tag)
-{
-#ifdef CONFIG_MTK_ENG_BUILD
-	int i;
-
-	if (!trace->count) {
-		pr_info("[xfrm_state] %s [%s]\n", __func__, tag);
-		return;
-	}
-	pr_info("[xfrm_state][%s][time %5lu.%06lu] [pid %d] [cpu %d]\n", tag,
-		trace->when_sec, trace->when_nsec / 1000, trace->pid, trace->cpu);
-	for (i = 0; i < XFRM_TRACK_ADDRS_COUNT; i++) {
-		if (trace->addrs[i] != 0)
-			pr_info("[xfrm_state][%d][<%p>] %pS\n", trace->count
-				, (void *)trace->addrs[i], (void *)trace->addrs[i]);
-	}
 #endif
 }
 

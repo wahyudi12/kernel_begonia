@@ -5,6 +5,8 @@
 
 # Each configuration option enables a list of files.
 
+subdir-ccflags-y += $(call cc-option, -Wno-fortify-source)
+
 wm97xx-ts-y := wm97xx-core.o
 
 obj-$(CONFIG_TOUCHSCREEN_PROPERTIES)	+= of_touchscreen.o

@@ -1,6 +1,8 @@
 # SPDX-License-Identifier: GPL-2.0
 # Makefile for staging directory
 
+subdir-ccflags-y += -Wno-enum-compare
+
 obj-y				+= media/
 obj-y				+= typec/
 obj-$(CONFIG_IRDA)		+= irda/net/

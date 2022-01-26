@@ -181,21 +181,18 @@ static struct reg_index_offset find_register_index(
 		if (reg > rm[index]->addr) {
 			if ((reg - rm[index]->addr) < rm[index]->size) {
 				rio.index = index;
-				while (&rd->props.group[i] != NULL) {
-					if (reg >= rd->props.group[i].start
-					&& reg <= rd->props.group[i].end) {
-						unit =
-							rd->props.group[i].mode;
-						break;
-					}
+				if (reg >= rd->props.group[i].start
+				&& reg <= rd->props.group[i].end) {
+					unit = rd->props.group[i].mode;
 					i++;
-					unit = RT_1BYTE_MODE;
 				}
-				rio.offset =
-					(reg-rm[index]->addr)*unit;
-			} else
-				rio.offset = rio.index = -1;
-		}
+				i++;
+				unit = RT_1BYTE_MODE;
+			}
+			rio.offset =
+				(reg-rm[index]->addr)*unit;
+		} else
+			rio.offset = rio.index = -1;
 	}
 	return rio;
 }
@@ -1435,12 +1432,10 @@ static int general_read(struct seq_file *seq_file, void *_data)
 			break;
 		}
 hiden_read:
-		if (&reg_data[i] != NULL) {
-			seq_puts(seq_file, "0x");
-			for (i = 0; i < size; i++)
-				seq_printf(seq_file, "%02x,", reg_data[i]);
-			seq_puts(seq_file, "\n");
-		}
+		seq_puts(seq_file, "0x");
+		for (i = 0; i < size; i++)
+			seq_printf(seq_file, "%02x,", reg_data[i]);
+		seq_puts(seq_file, "\n");
 		break;
 	case RT_DBG_ERROR:
 		seq_puts(seq_file, "======== Error Message ========\n");

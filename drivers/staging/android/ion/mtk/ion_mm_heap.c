@@ -962,7 +962,7 @@ static int ion_mm_heap_phys(struct ion_heap *heap, struct ion_buffer *buffer,
 				       ret, sg_phys(buffer->sg_table->sgl),
 				       sg_phys(buffer_info->table_orig->sgl));
 #else
-				IONMSG("OUT OF RANGE(%d) pa=0x%lx\n",
+				IONMSG("OUT OF RANGE(%d) pa=0x%llx\n",
 				       ret, sg_phys(buffer->sg_table->sgl));
 #endif
 				ion_buffer_dump(buffer, NULL);

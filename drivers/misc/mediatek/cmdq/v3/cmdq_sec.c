@@ -1999,7 +1999,7 @@ static void cmdq_sec_exec_task_async_impl(struct work_struct *work_item)
 				CMDQ_MAX_COOKIE_VALUE) % CMDQ_MAX_COOKIE_VALUE;
 
 			CMDQ_ERR(
-				"gce: err:%d task:%p pkt:%p thread:%u task_cnt:%u wait_cookie:%u next_cookie:%u",
+				"gce: err:%lu task:%p pkt:%p thread:%u task_cnt:%u wait_cookie:%u next_cookie:%u",
 				(unsigned long) err, task, task->handle->pkt,
 				task->thread->idx, task->thread->task_cnt,
 				task->thread->wait_cookie, task->thread->next_cookie);

@@ -2489,7 +2489,7 @@ void m4u_call_atf_debug(int m4u_debug_id)
 	tf_en = res.a0;
 	tf_port = res.a1;
 	if (tf_en)
-		m4u_info("%s:has_tf:%d, tf_port:0x%x\n",
+		m4u_info("%s:has_tf:%lu, tf_port:0x%lx\n",
 			 __func__, tf_en, tf_port);
 }
 

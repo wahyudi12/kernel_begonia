@@ -4505,7 +4505,7 @@ skip_classify:
 		if (vlan_do_receive(&skb))
 			goto another_round;
 		else if (unlikely(!skb)){
-                  	printk(KERN_ERR "ADDLOG %s:%d dev:%s state:%lu  , dropped:%d",__func__,__LINE__,ret);
+                  	printk(KERN_ERR "ADDLOG %s:%d dev:%d state:, dropped:",__func__,__LINE__,ret);
                   	goto out;
                 }
 	}

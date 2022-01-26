@@ -1841,7 +1841,7 @@ static long MTK_M4U_ioctl(struct file *filp,
 	{
 		int mtk_iommu_sec_id = 0;
 
-		m4u_info("MTK M4U ioctl : MTK_M4U_T_GZ_SEC_INIT command!! 0x%x, arg:%d\n",
+		m4u_info("MTK M4U ioctl : MTK_M4U_T_GZ_SEC_INIT command!! 0x%x, arg:%lu\n",
 			 cmd, arg);
 		mtk_iommu_sec_id = arg;
 		if (mtk_iommu_sec_id < 0 ||

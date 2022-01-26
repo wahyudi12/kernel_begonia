@@ -11460,10 +11460,10 @@ wlanoidSetNvramWrite(IN struct ADAPTER *prAdapter,
 			rNvRwInfo->info.rNvram.u2NvIndex,
 			rNvRwInfo->info.rNvram.u2NvData & 0x00FF);
 
-		DBGLOG(REQ, INFO, "status(%d),index=%#X, data=%#02X\n",
-			fgStatus,
-			rNvRwInfo->info.rNvram.u2NvIndex,
-			rNvRwInfo->info.rNvram.u2NvData);
+	DBGLOG(REQ, INFO, "status(%d),index=%#X, data=%#02X\n",
+		fgStatus,
+		rNvRwInfo->info.rNvram.u2NvIndex,
+		rNvRwInfo->info.rNvram.u2NvData);
 
 		/*update nvram to firmware*/
 		if (fgStatus == TRUE)

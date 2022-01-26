@@ -148,7 +148,7 @@ static int ged_dvfs_opp_cost_seq_show(struct seq_file *psSeqFile,
 
 			for (i = 0; i < ui32FqCount; i++) {
 				len = scnprintf(acBuffer, 32,
-					"%10lu", 1000 * mt_gpufreq_get_freq_by_idx(i));
+					"%10u", 1000 * mt_gpufreq_get_freq_by_idx(i));
 				acBuffer[len] = 0;
 				seq_puts(psSeqFile, acBuffer);
 			}
@@ -163,7 +163,7 @@ static int ged_dvfs_opp_cost_seq_show(struct seq_file *psSeqFile,
 					seq_puts(psSeqFile, " ");
 
 
-				len = scnprintf(acBuffer, 32, "%10lu",
+				len = scnprintf(acBuffer, 32, "%10u",
 					1000 * mt_gpufreq_get_freq_by_idx(i));
 				acBuffer[len] = 0;
 				seq_puts(psSeqFile, acBuffer);
@@ -223,7 +223,7 @@ static ssize_t opp_logs_show(struct kobject *kobj,
 				len += sprintf(buf + len, "*");
 			else
 				len += sprintf(buf + len, " ");
-			len += sprintf(buf + len, "%10lu",
+			len += sprintf(buf + len, "%10u",
 				1000 * mt_gpufreq_get_freq_by_idx(i));
 
 			/* truncate to ms */

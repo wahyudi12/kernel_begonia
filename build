@@ -163,7 +163,13 @@ Build_GCC() {
     exec 2> >(tee -a out/error.log >&2)
     make  -j$(nproc --all)  O=out \
                             PATH="$GCC64/bin:$GCC/bin:/usr/bin:$PATH" \
-                            AR=aarch64-elf-ar \
+                            AS=llvm-as \
+                            NM=llvm-nm \
+                            OBJCOPY=llvm-objcopy \
+                            OBJDUMP=llvm-objdump \
+			    STRIP=llvm-strip \
+			    AR=llvm-ar \
+    			    AR=aarch64-elf-ar \
                             NM=llvm-nm \
                             LD=ld.lld \
                             OBCOPY=llvm-objcopy \
